@@ -1,4 +1,3 @@
-import { PaletteMode } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ITask {

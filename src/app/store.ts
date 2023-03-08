@@ -3,11 +3,13 @@ import { persistStore, persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, R
 import storage from "redux-persist/lib/storage";
 import tasksSlice from "../features/tasks/tasksSlice";
 import themeSlice from "../features/theme/themeSlice";
+import timerSlice from "../features/timer/timerSlice";
 
 const rootReducer = combineReducers({
   theme: themeSlice,
   tasks: tasksSlice,
-})
+  timer: timerSlice,
+});
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);

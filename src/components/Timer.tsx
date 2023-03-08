@@ -5,10 +5,13 @@ import useInterval from "../hooks/useInterval";
 import IconButton from "./IconButton";
 import PrimaryButton from "./PrimaryButton";
 import OutlinedButton from "./OutlinedButton";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { motion, AnimatePresence } from "framer-motion";
+import { ESteps, nextStep, tick } from "../features/timer/timerSlice";
 
 const tomatoTime: number = 25;
+const shortBreakTime: number = 5;
+const longBreakTime: number = 15;
 
 const formatTime = (time: number) => {
   const minutesCount = Math.floor(time / 60);
@@ -21,37 +24,47 @@ const formatTime = (time: number) => {
 }
 
 const Timer = () => {
+  const { curTime, tomatoNumber, breakNumber, step } = useAppSelector(state => state.timer);
   const tasksList = useAppSelector(state => state.tasks.list);
   const firstTaskName = tasksList[0] ? tasksList[0].name : "Не задана";
+  const dispatch = useAppDispatch();
 
+  // const curTime = step === ESteps.work ? tomatoTime : step === ESteps.shortBreak ? shortBreakTime : longBreakTime;
+  // const [time, setTime] = useState(curTime * 60);
+  const [formattedMinutes, formattedSeconds] = formatTime(curTime);
   const [isStarted, setIsStarted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [time, setTime] = useState(tomatoTime * 60);
-  const [formattedMinutes, formattedSeconds] = formatTime(time);
 
   const { palette } = useTheme();
+  const stepColor = !isStarted ? palette.gray.C4 : step === ESteps.work ? palette.red.medium : palette.green.main;
+
+  const resetTimer = () => {
+    setIsStarted(false);
+    setIsPlaying(false);
+    dispatch(nextStep());
+  }
 
   useInterval(() => {
-    setTime(prev => prev - 1);
+    curTime <= 0 ? resetTimer() : dispatch(tick());
   }, isPlaying ? 1000 : null);
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" p="19px 40px" fontSize="16px" lineHeight="17px" color="#FFF" bgcolor={palette.gray.C4}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" p="19px 40px" fontSize="16px" lineHeight="17px" color="#FFF" bgcolor={stepColor} sx={{ transition: "background-color .2s ease-in-out" }}>
         <Typography variant="h5">{firstTaskName}</Typography>
-        Помидор 1
+        { step === ESteps.work ? `Помидор ${tomatoNumber}` : `Перерыв ${breakNumber}` }
       </Box>
       <Box p="85px 15px 107px" textAlign="center" bgcolor={palette.gray.F4}>
         <Box>
-          <Box position="relative" mb="15px" display="inline-block" sx={{ fontSize: "150px", lineHeight: "150px", color: "#333", fontWeight: 200 }}>
-            <Box display="inline-flex" height="150px" overflow="hidden" sx={{ transition: "width .3s ease-in-out" }}>
+          <Box position="relative" mb="15px" display="inline-block" sx={{ fontSize: "150px", lineHeight: "150px", color: !isStarted ? "#333" : stepColor, fontWeight: 200, transition: "color .2s ease-in-out" }}>
+            <Box display="inline-flex" height="150px" overflow="hidden">
 
               {/* MM */}
-              {formattedMinutes.split("").map(item => (
-                <Box position="relative">
+              {formattedMinutes.split("").map((item, index) => (
+                <Box key={`min-${index}`} position="relative">
                   <AnimatePresence>
                     <motion.div
-                      key={`minutes${item}`}
+                      key={`digit-minutes${index}${item}`}
                       initial={{ y: -120, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ position: "absolute", y: 120, opacity: 0 }}
@@ -62,13 +75,13 @@ const Timer = () => {
                   </AnimatePresence>
                 </Box>
               ))}
-              <Box>:</Box>
+              <Box sx={{ transform: "translateY(-20px)" }}>:</Box>
               {/* SS */}
-              {formattedSeconds.split("").map(item => (
-                <Box position="relative">
+              {formattedSeconds.split("").map((item, index) => (
+                <Box  key={`sec-${index}`} position="relative">
                   <AnimatePresence>
                     <motion.div
-                      key={`seconds${item}`}
+                      key={`digit-seconds${index}${item}`}
                       initial={{ y: -120, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ position: "absolute", y: 120, opacity: 0 }}
@@ -95,9 +108,9 @@ const Timer = () => {
             setIsStarted(true);
             setIsPlaying(!isPlaying);
           }}>
-            {!isPlaying ? "Старт" : "Пауза"}
+            {!isStarted ? "Старт" : !isPlaying ? "Продолжить" : "Пауза"}
           </PrimaryButton>
-          <OutlinedButton onClick={() => setIsPlaying(false)} disabled={!isStarted}>
+          <OutlinedButton onClick={resetTimer} disabled={!isStarted}>
             Стоп
           </OutlinedButton>
         </Box>
