@@ -1,37 +1,30 @@
-import { Box, InputBase, useTheme } from "@mui/material";
 import { useState } from "react";
+import { Box } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { add } from "../features/tasks/tasksSlice";
+import Input from "./Input";
 import PrimaryButton from "./PrimaryButton";
+import useSxStyles from "../hooks/useSxStyles";
 
 const CreateTaskForm = () => {
-  const { palette } = useTheme();
   const [taskValue, setTaskValue] = useState("");
   const dispatch = useAppDispatch();
+  const styles = useSxStyles().createTaskForm;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(add(taskValue));
+    dispatch(add(taskValue.trim()));
     setTaskValue("");
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <Box maxWidth="370px" mb="25px" p="15px 15px 14px" bgcolor={palette.gray.F4}>
-        <InputBase
+      <Box sx={styles.inputWrapper}>
+        <Input
           fullWidth
           value={taskValue}
           placeholder="Название задачи"
           onChange={e => setTaskValue(e.target.value)}
-          sx={{
-            color: "#333",
-            fontSize: "16px",
-            lineHeight: "17px",
-            fontWeight: 300,
-            "&::placeholder": {
-              color: "#999999",
-            }
-          }}
           required
         />
       </Box>

@@ -1,15 +1,11 @@
-import { AddCircleOutlineOutlined, DeleteOutlineOutlined, EditOutlined, MoreHoriz, RemoveCircleOutlineOutlined } from "@mui/icons-material";
-import { MenuItem, Typography, useTheme } from "@mui/material";
-import { Box } from "@mui/material";
-import { IconButton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { AddCircleOutlineOutlined, DeleteOutlineOutlined, EditOutlined, MoreHoriz, RemoveCircleOutlineOutlined } from "@mui/icons-material";
+import { Box, Button, IconButton, InputBase, MenuItem, Typography, useTheme } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
-import { decrement, increment, ITask, remove } from "../features/tasks/tasksSlice";
+import { decrement, edit, increment, ITask, remove } from "../features/tasks/tasksSlice";
+import SecondaryButton from "./SecondaryButton";
 import DropdownMenu from "./DropdownMenu";
 import Modal from "./Modal";
-import SecondaryButton from "./SecondaryButton";
-import { Button } from "@mui/material";
-import { AnimatePresence, motion } from "framer-motion";
 
 interface ITaskProps {
   task: ITask;
@@ -18,6 +14,8 @@ interface ITaskProps {
 const Task = ({ task }: ITaskProps) => {
   const dispatch = useAppDispatch();
   const [menuOpened, setMenuOpened] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editInputValue, setEditInputValue] = useState(task.name);
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
   const [coords, setCoords] = useState({
     left: 0,
@@ -70,12 +68,14 @@ const Task = ({ task }: ITaskProps) => {
         sx={{
           display: "flex",
           alignItems: "center",
+          flexGrow: 1,
           gap: "10px",
           "&::before": {
             content: `"${task.tomatosCount}"`,
             display: "inline-flex",
             justifyContent: "center",
             alignItems: "center",
+            flexShrink: 0,
             width: "25px",
             height: "25px",
             border: `1px solid ${palette.gray.C4}`,
@@ -83,36 +83,29 @@ const Task = ({ task }: ITaskProps) => {
           }
         }}
       >
-        {/* <Box
-          component={motion.div}
-          sx={{
-            position: "relative",
-            display: "inline-flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "25px",
-            height: "25px",
-            border: `1px solid ${palette.gray.C4}`,
-            borderRadius: "50%",
-            overflow: "hidden",
-          }}
-        >
-          <AnimatePresence>
-            {task.tomatosCount.toString().split("").map(item => (
-              <motion.div
-              key={item}
-              initial={{ y: -20 }}
-              animate={{ y: 0 }}
-              exit={{ position: "absolute", y: 20 }}
-            >
-              {item}
-            </motion.div>
-            ))}
-          </AnimatePresence>
-        </Box> */}
-        {task.name}
+        {!isEditing ? task.name : (
+          <form style={{ flexGrow: 1 }} onSubmit={(e) => {
+            e.preventDefault();
+            dispatch(edit({ id: task.id, newName: editInputValue }));
+            setIsEditing(false);
+          }}>
+            <InputBase
+              autoFocus
+              fullWidth
+              value={editInputValue}
+              onChange={(e) => setEditInputValue(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              onBlur={() => {
+                setIsEditing(false);
+                setEditInputValue(task.name);
+              }}
+              inputProps={{ style: { padding: 0 } }}
+              sx={{ fontSize: "16px", lineHeight: "17px", fontWeight: 300 }}
+            />
+          </form>
+        )}
       </Typography>
-      <IconButton ref={menuButtonRef} sx={{ p: "5px" }} onClick={() => setMenuOpened(true)}>
+      <IconButton ref={menuButtonRef} sx={{ ml: "15px", p: "5px" }} onClick={() => setMenuOpened(true)}>
         <MoreHoriz sx={{ fontSize: "30px", color: palette.gray.C4 }} />
       </IconButton>
 
@@ -126,7 +119,7 @@ const Task = ({ task }: ITaskProps) => {
           <RemoveCircleOutlineOutlined sx={{ color: palette.green.light }} />
           Уменьшить
         </MenuItem>
-        <MenuItem tabIndex={1} sx={{ gap: "8px", p: "7px 15px" }} onKeyDown={keyDownHandler}>
+        <MenuItem tabIndex={1} sx={{ gap: "8px", p: "7px 15px" }} onClick={() => setIsEditing(true)} onKeyDown={keyDownHandler}>
           <EditOutlined sx={{ color: palette.green.light }} />
           Редактировать
         </MenuItem>

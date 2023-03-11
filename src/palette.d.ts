@@ -16,6 +16,7 @@ declare module "@mui/material" {
     gray: {
       F4?: string;
       E4?: string;
+      DE?: string;
       C4?: string;
       99?: string;
     }
@@ -36,6 +37,7 @@ declare module "@mui/material" {
     gray: {
       F4?: string;
       E4?: string;
+      DE?: string;
       C4?: string;
       99?: string;
     }

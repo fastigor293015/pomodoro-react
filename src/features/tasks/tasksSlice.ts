@@ -28,6 +28,10 @@ const tasksSlice = createSlice({
       }
       state.list.push(newTask);
     },
+    edit: (state, action: PayloadAction<{ id: string, newName: string }>) => {
+      const taskIndex = state.list.findIndex(item => item.id === action.payload.id);
+      state.list[taskIndex].name = action.payload.newName;
+    },
     remove: (state, action: PayloadAction<string>) => {
       const taskIndex = state.list.findIndex(item => item.id === action.payload);
       state.list.splice(taskIndex, 1);
@@ -39,9 +43,13 @@ const tasksSlice = createSlice({
     decrement: (state, action: PayloadAction<string>) => {
       const taskIndex = state.list.findIndex(item => item.id === action.payload);
       state.list[taskIndex].tomatosCount--;
+
+      if (state.list[taskIndex].tomatosCount <= 0) {
+        state.list.splice(taskIndex, 1);
+      }
     },
   },
 });
 
-export const { add, remove, increment, decrement } = tasksSlice.actions;
+export const { add, edit, remove, increment, decrement } = tasksSlice.actions;
 export default tasksSlice.reducer;

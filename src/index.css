@@ -49,4 +49,6 @@ body,
 .app {
   scroll-behavior: smooth;
   font-family: "SFUIDisplay", sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

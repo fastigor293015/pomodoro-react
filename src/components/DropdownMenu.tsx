@@ -1,7 +1,9 @@
-import { Box, MenuList, useTheme } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { Box, MenuList, useTheme } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
+import useSxStyles from "../hooks/useSxStyles";
 
 interface IDropdownMenu {
   isOpened: boolean;
@@ -10,9 +12,28 @@ interface IDropdownMenu {
   children: React.ReactNode;
 }
 
+const variants: Variants = {
+  initial: {
+    x: "-50%",
+    y: 50,
+    opacity: 0,
+    scale: 0,
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: {
+    y: 50,
+    opacity: 0,
+    scale: 0,
+  }
+}
+
 const DropdownMenu = ({ isOpened, setIsOpened, coords, children }: IDropdownMenu) => {
   const [autoFocusItem, setAutoFocusItem] = useState(false);
-  const { palette } = useTheme();
+  const styles = useSxStyles().dropdownMenu;
   console.log(coords);
 
   useEffect(() => {
@@ -39,45 +60,15 @@ const DropdownMenu = ({ isOpened, setIsOpened, coords, children }: IDropdownMenu
   return ReactDOM.createPortal(
     <AnimatePresence>
       {isOpened && <Box
+        sx={styles.container}
         component={motion.div}
+        variants={variants}
         key="menu"
-        position="absolute"
         top={coords.top}
         left={coords.left}
-        zIndex="5"
-        p="7px 0"
-        border={`1px solid ${palette.gray.C4}`}
-        bgcolor={palette.background.default}
-        initial={{ x: "-50%", y: 50, opacity: 0, scale: 0 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={{ y: 50, opacity: 0, scale: 0 }}
-        sx={{
-          "&::before": {
-            content: `""`,
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            zIndex: 1,
-            display: "block",
-            width: 0,
-            height: 0,
-            border: "7px solid transparent",
-            borderBottom: `7px solid ${palette.background.default}`,
-            transform: "translate(-50%, -100%)",
-          },
-          "&::after": {
-            content: `""`,
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            display: "block",
-            width: 0,
-            height: 0,
-            border: "8px solid transparent",
-            borderBottom: `8px solid ${palette.gray.C4}`,
-            transform: "translate(-50%, -100%)",
-          }
-        }}
+        initial="initial"
+        animate="animate"
+        exit="exit"
       >
         <MenuList variant="selectedMenu" disablePadding autoFocusItem={autoFocusItem}>
           {children}

@@ -1,8 +1,10 @@
-import { Box, IconButton, useTheme } from "@mui/material";
-import ReactDOM from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { CloseRounded } from "@mui/icons-material";
 import { useEffect } from "react";
+import ReactDOM from "react-dom";
+import { Box, IconButton, useTheme } from "@mui/material";
+import { CloseRounded } from "@mui/icons-material";
+import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
+import useSxStyles from "../hooks/useSxStyles";
 
 interface IModalProps {
   isOpened: boolean;
@@ -10,8 +12,38 @@ interface IModalProps {
   children: React.ReactNode;
 }
 
+const backgroundVariants: Variants = {
+  initial: {
+    backgroundColor: "rgba(0, 0, 0, 0)",
+  },
+  animate: {
+    backgroundColor: "rgba(0, 0, 0, .6)",
+  },
+  exit: {
+    backgroundColor: "rgba(0, 0, 0, 0)",
+  },
+}
+
+const contentVariants: Variants = {
+  initial: {
+    opacity: 0,
+    scale: 0,
+    x: "-50%",
+    y: "-50%",
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+  },
+  exit: {
+    opacity: 0,
+    scale: 0,
+  },
+}
+
 const Modal = ({ isOpened, setIsOpened, children }: IModalProps) => {
   const { palette } = useTheme();
+  const styles = useSxStyles().modal;
 
   useEffect(() => {
     if (!isOpened) return;
@@ -27,34 +59,26 @@ const Modal = ({ isOpened, setIsOpened, children }: IModalProps) => {
   return ReactDOM.createPortal(
     <AnimatePresence>
       {isOpened && <Box
+        sx={styles.background}
         component={motion.div}
+        variants={backgroundVariants}
         key="modal"
-        position="fixed"
-        zIndex="20"
-        sx={{
-          inset: 0,
-        }}
-        animate={{ backgroundColor: "rgba(0, 0, 0, .6)" }}
-        initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
-        exit={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+        initial="initial"
+        animate="animate"
+        exit="exit"
         onClick={e => {
           if (e.currentTarget === e.target) setIsOpened(false);
         }}
       >
         <Box
+          sx={styles.content}
           component={motion.div}
-          position="absolute"
-          zIndex="20"
-          top="50%"
-          left="50%"
-          bgcolor={palette.background.default}
-          boxShadow="0px 0px 20px 7px rgba(34, 60, 80, 0.2)"
-          overflow="hidden"
-          animate={{ opacity: 1, scale: 1 }}
-          initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
-          exit={{ opacity: 0, scale: 0 }}
+          variants={contentVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
         >
-          <IconButton sx={{ position: "absolute", top: "6px", right: "6px", color: palette.gray.C4 }} onClick={() => setIsOpened(false)}>
+          <IconButton sx={styles.closeBtn} onClick={() => setIsOpened(false)}>
             <CloseRounded />
           </IconButton>
           {children}
