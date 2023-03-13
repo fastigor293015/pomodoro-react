@@ -1,10 +1,10 @@
+import { Link as RouterLink } from "react-router-dom";
 import { Box, IconButton, Link as MUILink, useTheme } from "@mui/material";
 import { LightMode, DarkMode, Equalizer } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { setMode } from "../features/theme/themeSlice";
-import Icon, { EIcons } from "./Icon";
 import useSxStyles from "../hooks/useSxStyles";
+import { GenericIcon, EIcons } from "./GenericIcon";
 
 const Header = () => {
   const { palette } = useTheme();
@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <Box sx={styles.container}>
       <MUILink component={RouterLink} to="/" sx={styles.logo}>
-        <Icon type={EIcons.tomato} />
+        <GenericIcon type={EIcons.tomato} />
         pomodoro_box
       </MUILink>
 

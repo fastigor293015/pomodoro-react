@@ -19,7 +19,22 @@ declare module "@mui/material" {
       DE?: string;
       C4?: string;
       99?: string;
-    }
+    },
+    yellow: {
+      light: string;
+      main: string;
+      dark: string;
+    },
+    purple: {
+      light: string;
+      main: string;
+      dark: string;
+    },
+    cyan: {
+      light: string;
+      main: string;
+      dark: string;
+    },
   }
 
   interface PaletteOptions extends MUIPaletteOptions {
@@ -40,7 +55,22 @@ declare module "@mui/material" {
       DE?: string;
       C4?: string;
       99?: string;
-    }
+    },
+    yellow: {
+      light: string;
+      main: string;
+      dark: string;
+    },
+    purple: {
+      light: string;
+      main: string;
+      dark: string;
+    },
+    cyan: {
+      light: string;
+      main: string;
+      dark: string;
+    },
   }
 
   export function createPalette(palette: PaletteOptions): Palette;

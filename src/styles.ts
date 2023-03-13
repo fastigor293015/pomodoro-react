@@ -185,6 +185,74 @@ const styles: StylesType = (theme) => ({
     },
   },
 
+  // TASK
+  task: {
+    container: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      width: "100%",
+      p: "8px 0",
+    },
+    name: {
+      display: "flex",
+      alignItems: "center",
+      flexGrow: 1,
+      gap: "10px",
+      fontWeight: 300,
+    },
+    tomatosCount: {
+      display: "inline-flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexShrink: 0,
+      width: "25px",
+      height: "25px",
+      border: `1px solid ${theme.palette.gray.C4}`,
+      borderRadius: "50%",
+    },
+    editingFormWrapper: {
+      flexGrow: 1,
+    },
+    menuBtn: {
+      ml: "15px",
+      p: "5px",
+      "& > svg": {
+        fontSize: "30px",
+        color: theme.palette.gray.C4,
+      },
+    },
+    menuItem: {
+      gap: "8px",
+      p: "7px 15px",
+      "& > svg": {
+        color: theme.palette.green.light,
+      },
+    },
+    modal: {
+      width: "350px",
+      p: "25px 50px",
+      textAlign: "center",
+    },
+    modalTitle: {
+      mb: "25px",
+      lineHeight: "17px",
+      fontWeight: "400",
+    },
+    modalDeleteBtnWrapper: {
+      mb: "8px",
+    },
+    modalCancelBtn: {
+      p: "2px 4px",
+      color: theme.palette.text.primary,
+      fontSize: "16px",
+      lineHeight: "17px",
+      fontWeight: 300,
+      textDecoration: "underline",
+      textTransform: "none",
+  }
+  },
+
   // TIMER
   timer: {
     header: {
@@ -247,6 +315,111 @@ const styles: StylesType = (theme) => ({
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
+      mb: "30px",
+    },
+    content: {
+      display: "grid",
+      gridTemplateColumns: "repeat(12, 1fr)",
+      gridTemplateRows: "minmax(260px, max-content)",
+      gridAutoFlow: "row dense",
+      gridAutoRows: "minmax(179px, max-content)",
+      gap: "32px",
+    },
+    statsCard: {
+      p: "25px",
+      bgcolor: theme.palette.gray.F4,
+    },
+    weekDay: {
+      gridColumn: "3 span",
+    },
+    weekDayTitle: {
+      mb: "14px",
+    },
+    weekDayDescr: {
+      fontSize: "16px",
+      lineHeight: 1.75,
+    },
+    chart: {
+      gridColumn: "9 span",
+      gridRow: "2 span",
+      maxHeight: "471px",
+      p: 0,
+      // "& svg *": {
+      //   fontFamily: "SFUIDisplay, sans-serif !important",
+      // }
+    },
+    tomatosCount: {
+      gridColumn: "3 span",
+      textAlign: "center",
+    },
+    focus: {
+      position: "relative",
+      gridColumn: "4 span",
+      bgcolor: theme.palette.yellow.light,
+      "& svg": {
+        position: "absolute",
+        top: "50%",
+        right: "25px",
+        transform: "translateY(-50%)",
+        color: theme.palette.yellow.main,
+      },
+    },
+    focusText: {
+      position: "relative",
+      zIndex: 1,
+    },
+    focusTitle: {
+      mb: "20px",
+    },
+    focusDescr: {
+      fontSize: "64px",
+      lineHeight: 1.194,
+    },
+    pauseTime: {
+      position: "relative",
+      gridColumn: "4 span",
+      bgcolor: theme.palette.purple.light,
+      "& svg": {
+        position: "absolute",
+        top: "50%",
+        right: "25px",
+        transform: "translateY(-50%)",
+        color: theme.palette.purple.main,
+      },
+    },
+    pauseTimeText: {
+      position: "relative",
+      zIndex: 1,
+    },
+    pauseTimeTitle: {
+      mb: "20px",
+    },
+    pauseTimeDescr: {
+      fontSize: "64px",
+      lineHeight: 1.194,
+    },
+    stops: {
+      position: "relative",
+      gridColumn: "4 span",
+      bgcolor: theme.palette.cyan.light,
+      "& svg": {
+        position: "absolute",
+        top: "50%",
+        right: "25px",
+        transform: "translateY(-50%)",
+        color: theme.palette.cyan.main,
+      },
+    },
+    stopsText: {
+      position: "relative",
+      zIndex: 1,
+    },
+    stopsTitle: {
+      mb: "10px",
+    },
+    stopsDescr: {
+      fontSize: "72px",
+      lineHeight: 1.1875,
     },
   },
 });

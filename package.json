@@ -14,12 +14,15 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.11",
+    "@nivo/bar": "^0.80.0",
     "@reduxjs/toolkit": "^1.9.3",
     "framer-motion": "^10.1.0",
+    "mui-sx": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2",
+    "recharts": "^2.4.3",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {

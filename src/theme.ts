@@ -18,6 +18,21 @@ export const themeSettings = (mode: PaletteMode): ThemeOptions => {
         medium: "#DC3E22",
         dark: "#B7280F",
       },
+      yellow: {
+        light: "#FFDDA9",
+        main: "#FFAE35",
+        dark: "#FFAE35",
+      },
+      purple: {
+        light: "#DFDCFE",
+        main: "#9C97D7",
+        dark: "#9C97D7",
+      },
+      cyan: {
+        light: "#C5F1FF",
+        main: "#7FC2D7",
+        dark: "#7FC2D7",
+      },
       gray: {
         F4: "#F4F4F4",
         E4: "#E4E4E4",
