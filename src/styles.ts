@@ -299,6 +299,7 @@ const styles: StylesType = (theme) => ({
       mb: "32px",
       fontSize: "16px",
       lineHeight: "17px",
+      color: "#333",
       "& span:first-of-type": {
         color: theme.palette.gray[99],
       },
@@ -338,6 +339,10 @@ const styles: StylesType = (theme) => ({
     weekDayDescr: {
       fontSize: "16px",
       lineHeight: 1.75,
+      "& span": {
+        color: theme.palette.red.medium,
+        fontWeight: 700,
+      }
     },
     chart: {
       gridColumn: "9 span",

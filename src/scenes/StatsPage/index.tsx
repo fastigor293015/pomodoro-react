@@ -8,7 +8,7 @@ import useSxStyles from "../../hooks/useSxStyles";
 import Select from "../../components/Select";
 import { GenericIcon, EIcons } from "../../components/GenericIcon";
 import BarChart from "../../components/BarChart";
-import { BarDatum } from "@nivo/bar/dist/types/types";
+import { motion, Transition, Variants } from "framer-motion";
 
 const selectItems = [
   {
@@ -25,53 +25,83 @@ const selectItems = [
   },
 ];
 
+const variants: Variants = {
+  initial: {
+    scale: 0,
+    opacity: 0,
+  },
+  animate: {
+    scale: 1,
+    opacity: 1,
+  },
+}
+
+const transition: Transition = {
+  delay: .2,
+}
+
+const formatTime = (time: number) => {
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.round((time - hours * 3600) / 60);
+
+  return `${hours ? `${hours} ч ` : ""}${minutes ? `${minutes} мин` : ""}`;
+}
+
 const StatsPage = () => {
   const [selectValue, setSelectValue] = useState(selectItems[0].value);
+  const [activeBar, setActiveBar] = useState<number>(0);
   const { palette } = useTheme();
   const styles = useSxStyles().statsPage;
 
-  const mockData: BarDatum[] = [
+  const mockData = [
     {
       "weekDay": "Пн",
-      time: selectValue === "This-week" ? 44 : selectValue === "Last-week" ? 145 : selectValue === "Two-weeks-ago" ? 25 : 0,
+      time: selectValue === "This-week" ? 4400 : selectValue === "Last-week" ? 145 : selectValue === "Two-weeks-ago" ? 2500 : 0,
       "timeColor": palette.red.light!,
       value: "monday",
+      label: "Понедельник",
     },
     {
       "weekDay": "Вт",
-      time: selectValue === "This-week" ? 120 : selectValue === "Last-week" ? 30 : selectValue === "Two-weeks-ago" ? 135 : 0,
+      time: selectValue === "This-week" ? 12000 : selectValue === "Last-week" ? 30 : selectValue === "Two-weeks-ago" ? 13500 : 0,
       "timeColor": palette.red.light!,
       value: "tuesday",
+      label: "Вторник",
     },
     {
       "weekDay": "Ср",
-      time: selectValue === "This-week" ? 10 : selectValue === "Last-week" ? 120 : selectValue === "Two-weeks-ago" ? 40 : 0,
+      time: selectValue === "This-week" ? 1000 : selectValue === "Last-week" ? 120 : selectValue === "Two-weeks-ago" ? 4000 : 0,
       "timeColor": palette.red.light!,
       value: "wednesday",
+      label: "Среда",
     },
     {
       "weekDay": "Чт",
-      time: selectValue === "This-week" ? 112 : selectValue === "Last-week" ? 35 : selectValue === "Two-weeks-ago" ? 126 : 0,
+      time: selectValue === "This-week" ? 11200 : selectValue === "Last-week" ? 35 : selectValue === "Two-weeks-ago" ? 12600 : 0,
       "timeColor": palette.red.light!,
       value: "thirsday",
+      label: "Четверг",
     },
     {
       "weekDay": "Пт",
-      time: selectValue === "This-week" ? 35 : selectValue === "Last-week" ? 185 : selectValue === "Two-weeks-ago" ? 54 : 0,
+      time: selectValue === "This-week" ? 3500 : selectValue === "Last-week" ? 185 : selectValue === "Two-weeks-ago" ? 5400 : 0,
       "timeColor": palette.red.light!,
       value: "friday",
+      label: "Пятница",
     },
     {
       "weekDay": "Сб",
-      time: selectValue === "This-week" ? 120 : selectValue === "Last-week" ? 30 : selectValue === "Two-weeks-ago" ? 135 : 0,
+      time: selectValue === "This-week" ? 12000 : selectValue === "Last-week" ? 30 : selectValue === "Two-weeks-ago" ? 13500 : 0,
       "timeColor": palette.red.light!,
       value: "saturday",
+      label: "Суббота",
     },
     {
       "weekDay": "Вс",
-      time: selectValue === "This-week" ? 44 : selectValue === "Last-week" ? 145 : selectValue === "Two-weeks-ago" ? 25 : 0,
+      time: selectValue === "This-week" ? 4400 : selectValue === "Last-week" ? 145 : selectValue === "Two-weeks-ago" ? 2500 : 0,
       "timeColor": palette.red.light!,
       value: "sunday",
+      label: "Воскресенье",
     },
   ]
 
@@ -105,22 +135,29 @@ const StatsPage = () => {
         </Box>
 
         <Box sx={styles.content}>
-          <Box sx={sx(styles.statsCard, styles.weekDay)}>
+          <Box sx={sx(styles.statsCard, styles.weekDay)} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition}>
             <Typography sx={styles.weekDayTitle} variant="h3">
-              Суббота
+              {mockData[activeBar].label}
             </Typography>
             <Typography sx={styles.weekDayDescr}>
-              Нет данных
+              {
+                mockData[activeBar].time
+                  ? <>
+                    Вы работали над задачами в течение&nbsp;
+                    <span>{formatTime(mockData[activeBar].time)}</span>
+                  </>
+                  : "Нет данных"
+              }
             </Typography>
           </Box>
-          <Box sx={sx(styles.statsCard, styles.chart)}>
-            <BarChart data={mockData} />
+          <Box sx={sx(styles.statsCard, styles.chart)} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition}>
+            <BarChart data={mockData} activeBar={activeBar} setActiveBar={setActiveBar} />
           </Box>
-          <Box sx={sx(styles.statsCard, styles.tomatosCount)}>
+          <Box sx={sx(styles.statsCard, styles.tomatosCount)} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition}>
             <GenericIcon type={EIcons.smilingTomato} />
           </Box>
 
-          <Box sx={sx(styles.statsCard, styles.focus)}>
+          <Box sx={sx(styles.statsCard, styles.focus)} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition}>
             <Box sx={styles.focusText}>
               <Typography sx={styles.focusTitle} variant="h3">
                 Фокус
@@ -131,7 +168,7 @@ const StatsPage = () => {
             </Box>
             <GenericIcon type={EIcons.target} />
           </Box>
-          <Box sx={sx(styles.statsCard, styles.pauseTime)}>
+          <Box sx={sx(styles.statsCard, styles.pauseTime)} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition}>
             <Box sx={styles.pauseTimeText}>
               <Typography sx={styles.pauseTimeTitle} variant="h3">
                 Время на паузе
@@ -142,7 +179,7 @@ const StatsPage = () => {
             </Box>
             <GenericIcon type={EIcons.clock} />
           </Box>
-          <Box sx={sx(styles.statsCard, styles.stops)}>
+          <Box sx={sx(styles.statsCard, styles.stops)} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition}>
             <Box sx={styles.stopsText}>
               <Typography sx={styles.stopsTitle} variant="h3">
                 Остановки
