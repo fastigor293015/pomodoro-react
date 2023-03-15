@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { themeSettings } from './theme';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import TimerPage from './scenes/TimerPage';
 import StatsPage from './scenes/StatsPage';
 import ErrorPage from './scenes/ErrorPage';
+import { init, update } from './features/stats/statsSlice';
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,14 @@ const router = createBrowserRouter([
 
 function App() {
   const mode = useAppSelector(state => state.theme.mode);
+  const statsData = useAppSelector(state => state.stats.statsData);
+  const dispatch = useAppDispatch();
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
+  useEffect(() => {
+    if (!statsData || statsData.length === 0) dispatch(init());
+    dispatch(update());
+  },);
 
   return (
     <ThemeProvider theme={theme}>

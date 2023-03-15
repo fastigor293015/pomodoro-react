@@ -58,6 +58,16 @@ const Select = (props: SelectProps) => {
         "& fieldset": {
           display: "none",
         },
+        "& .MuiSvgIcon-root": {
+          right: "13px",
+          fontSize: "25px",
+          color: palette.red.dark,
+          transformStyle: "preserve-3d",
+          transition: "transform .2s ease-in-out",
+        },
+        "& .css-11l30dm-MuiSvgIcon-root-MuiSelect-icon, & .css-8aemkt-MuiSvgIcon-root-MuiSelect-icon": {
+          transform: "rotateX(180deg)",
+        },
       }}
     >
       {props.children}

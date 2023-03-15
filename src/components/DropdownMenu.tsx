@@ -34,7 +34,6 @@ const variants: Variants = {
 const DropdownMenu = ({ isOpened, setIsOpened, coords, children }: IDropdownMenu) => {
   const [autoFocusItem, setAutoFocusItem] = useState(false);
   const styles = useSxStyles().dropdownMenu;
-  console.log(coords);
 
   useEffect(() => {
     if (!isOpened) return;

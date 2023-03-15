@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.11",
-    "@nivo/bar": "^0.80.0",
     "@reduxjs/toolkit": "^1.9.3",
     "framer-motion": "^10.1.0",
     "mui-sx": "^1.0.0",

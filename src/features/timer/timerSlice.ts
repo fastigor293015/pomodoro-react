@@ -30,6 +30,9 @@ const timerSlice = createSlice({
   name: "timer",
   initialState,
   reducers: {
+    stop: (state) => {
+      state.curTime = state.step === ESteps.work ? EStepsTime.work * 60 : ESteps.shortBreak ? EStepsTime.shortBreak * 60 : EStepsTime.longBreak * 60;
+    },
     tick: (state) => {
       state.curTime = state.curTime - 1;
     },
@@ -52,5 +55,5 @@ const timerSlice = createSlice({
   },
 });
 
-export const { tick, nextStep } = timerSlice.actions;
+export const { stop, tick, nextStep } = timerSlice.actions;
 export default timerSlice.reducer;

@@ -1,18 +1,21 @@
-import { useTheme } from "@mui/material";
 import { useState } from "react";
+import { useTheme } from "@mui/material";
 import { BarChart as RechartsBarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { IWeekDayData } from "../features/stats/statsSlice";
 
 interface IBarChart {
-  data: any[];
+  data: IWeekDayData[];
   activeBar: number;
   setActiveBar: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const formatTime = (time: number) => {
   const hours = Math.floor(time / 3600);
-  const minutes = Math.round((time - hours * 3600) / 60);
+  const minutes = time >= 3600 ? Math.round((time - hours * 3600) / 60) : Math.floor((time - hours * 3600) / 60);
 
-  return `${hours ? `${hours} ч ` : ""}${minutes ? `${minutes} мин` : ""}`;
+  return (time >= 3600)
+    ? `${hours ? `${hours} ч ` : ""}${minutes ? `${minutes} мин` : ""}`
+    : `${minutes ? `${minutes} мин ` : ""}${time - minutes * 60} с`;
 }
 
 const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
@@ -29,7 +32,7 @@ const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
           top: 45,
           right: 60,
           left: 0,
-          bottom: 10,
+          bottom: 16,
         }}
         barCategoryGap="13%"
         onMouseMove={state => {
@@ -49,6 +52,7 @@ const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
             fontSize: "24px",
             fill: palette.gray[99],
           }}
+          tickSize={10}
           padding={{
             left: 40,
             right: 40,

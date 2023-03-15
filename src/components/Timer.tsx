@@ -4,13 +4,14 @@ import useSxStyles from "../hooks/useSxStyles";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { ESteps, nextStep, tick } from "../features/timer/timerSlice";
+import { ESteps, nextStep, stop, tick } from "../features/timer/timerSlice";
 import { decrement } from "../features/tasks/tasksSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
 import IconButton from "./IconButton";
 import PrimaryButton from "./PrimaryButton";
 import OutlinedButton from "./OutlinedButton";
+import { pauseTick } from "../features/stats/statsSlice";
 
 
 const digitVariants: Variants = {
@@ -59,16 +60,26 @@ const Timer = () => {
   const styles = useSxStyles().timer;
   const stepColor = !isStarted ? palette.gray.C4 : step === ESteps.work ? palette.red.medium : palette.green.main;
 
-  const resetTimer = () => {
+  const updateTimer = () => {
     setIsStarted(false);
     setIsPlaying(false);
     if (step === ESteps.work && tasksList[0]) dispatch(decrement(tasksList[0].id));
     dispatch(nextStep());
   }
 
+  const resetTimer = () => {
+    setIsStarted(false);
+    setIsPlaying(false);
+    dispatch(stop());
+  }
+
   useInterval(() => {
-    curTime <= 0 ? resetTimer() : dispatch(tick());
+    curTime <= 0 ? updateTimer() : dispatch(tick());
   }, isPlaying ? 1000 : null);
+
+  useInterval(() => {
+    dispatch(pauseTick());
+  }, (isStarted && !isPlaying) ? 1000 : null);
 
   return (
     <Box>
@@ -138,7 +149,7 @@ const Timer = () => {
           }}>
             {!isStarted ? "Старт" : !isPlaying ? "Продолжить" : "Пауза"}
           </PrimaryButton>
-          <OutlinedButton onClick={resetTimer} disabled={!isStarted}>
+          <OutlinedButton onClick={(!isStarted || (isPlaying && step === ESteps.work)) ? resetTimer : updateTimer} disabled={!isStarted}>
             {(!isStarted || (isPlaying && step === ESteps.work)) ? "Стоп" : (step === ESteps.shortBreak || step === ESteps.longBreak) ? "Пропустить" : "Сделано"}
           </OutlinedButton>
         </Box>

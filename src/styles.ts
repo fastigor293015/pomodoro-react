@@ -328,6 +328,7 @@ const styles: StylesType = (theme) => ({
     },
     statsCard: {
       p: "25px",
+      color: "#333",
       bgcolor: theme.palette.gray.F4,
     },
     weekDay: {
@@ -349,13 +350,31 @@ const styles: StylesType = (theme) => ({
       gridRow: "2 span",
       maxHeight: "471px",
       p: 0,
-      // "& svg *": {
-      //   fontFamily: "SFUIDisplay, sans-serif !important",
-      // }
     },
     tomatosCount: {
       gridColumn: "3 span",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      p: 0,
+      fontSize: "24px",
+      lineHeight: 1.375,
+      fontWeight: 700,
       textAlign: "center",
+    },
+    tomatosCountTop: {
+      flexGrow: 1,
+      display: "flex",
+      alignItems: "center",
+      gap: "15px",
+      color: theme.palette.gray[99],
+    },
+    tomatosCountBottom: {
+      width: "100%",
+      p: "9px 0",
+      color: "#FFF",
+      bgcolor: theme.palette.red.medium,
     },
     focus: {
       position: "relative",
