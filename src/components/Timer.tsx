@@ -5,7 +5,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { ESteps, nextStep, stop, tick } from "../features/timer/timerSlice";
-import { decrement } from "../features/tasks/tasksSlice";
+import { timerDecrement } from "../features/tasks/tasksSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
 import IconButton from "./IconButton";
@@ -63,7 +63,7 @@ const Timer = () => {
   const updateTimer = () => {
     setIsStarted(false);
     setIsPlaying(false);
-    if (step === ESteps.work && tasksList[0]) dispatch(decrement(tasksList[0].id));
+    if (step === ESteps.work && tasksList[0]) dispatch(timerDecrement(tasksList[0].id));
     dispatch(nextStep());
   }
 

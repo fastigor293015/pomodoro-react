@@ -34,7 +34,7 @@ export const themeSettings = (mode: PaletteMode): ThemeOptions => {
         dark: "#7FC2D7",
       },
       gray: {
-        F4: "#F4F4F4",
+        F4: mode === "light" ? "#F4F4F4" : "#E7E4E4",
         E4: "#E4E4E4",
         DE: "#DEDEDE",
         C4: "#C4C4C4",

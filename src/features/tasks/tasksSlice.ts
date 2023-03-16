@@ -48,8 +48,16 @@ const tasksSlice = createSlice({
         state.list.splice(taskIndex, 1);
       }
     },
+    timerDecrement: (state, action: PayloadAction<string>) => {
+      const taskIndex = state.list.findIndex(item => item.id === action.payload);
+      state.list[taskIndex].tomatosCount--;
+
+      if (state.list[taskIndex].tomatosCount <= 0) {
+        state.list.splice(taskIndex, 1);
+      }
+    },
   },
 });
 
-export const { add, edit, remove, increment, decrement } = tasksSlice.actions;
+export const { add, edit, remove, increment, decrement, timerDecrement } = tasksSlice.actions;
 export default tasksSlice.reducer;

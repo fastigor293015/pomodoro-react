@@ -330,6 +330,13 @@ const styles: StylesType = (theme) => ({
       p: "25px",
       color: "#333",
       bgcolor: theme.palette.gray.F4,
+      // "&::before": {
+      //   content: `""`,
+      //   position: "absolute",
+      //   inset: 0,
+      //   bgcolor: "#000",
+      //   opacity: .1,
+      // },
     },
     weekDay: {
       gridColumn: "3 span",

@@ -1,42 +1,42 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { decrement } from '../tasks/tasksSlice';
+import { timerDecrement } from '../tasks/tasksSlice';
 import { stop, tick } from '../timer/timerSlice';
 
 const weekDays = [
   {
-    weekDay: "Пн",
-    label: "Понедельник",
+    weekDay: "Понедельник",
+    weekDayLabel: "Пн",
   },
   {
-    weekDay: "Вт",
-    label: "Вторник",
+    weekDay: "Вторник",
+    weekDayLabel: "Вт",
   },
   {
-    weekDay: "Ср",
-    label: "Среда",
+    weekDay: "Среда",
+    weekDayLabel: "Ср",
   },
   {
-    weekDay: "Чт",
-    label: "Четверг",
+    weekDay: "Четверг",
+    weekDayLabel: "Чт",
   },
   {
-    weekDay: "Пт",
-    label: "Пятница",
+    weekDay: "Пятница",
+    weekDayLabel: "Пт",
   },
   {
-    weekDay: "Сб",
-    label: "Суббота",
+    weekDay: "Суббота",
+    weekDayLabel: "Сб",
   },
   {
-    weekDay: "Вс",
-    label: "Воскресенье",
+    weekDay: "Воскресенье",
+    weekDayLabel: "Вс",
   },
 ]
 
 export interface IWeekDayData {
   weekDay: string,
+  weekDayLabel: string,
   date: string;
-  label: string,
   time: number,
   tomatosCount: number;
   pauseTime: number;
@@ -46,6 +46,7 @@ export interface IWeekDayData {
 interface StatsState {
   statsData: IWeekDayData[][];
   weekDayIndex: number;
+  date: string;
 }
 
 const getWeekDay = () => {
@@ -54,9 +55,14 @@ const getWeekDay = () => {
   return dayIndex === 0 ? 6 : dayIndex - 1;
 }
 
+const getDate = () => {
+  return new Date().toLocaleDateString("ru-RU");
+}
+
 const initialState: StatsState = {
   statsData: [],
   weekDayIndex: getWeekDay(),
+  date: getDate(),
 };
 
 const statsSlice = createSlice({
@@ -81,11 +87,15 @@ const statsSlice = createSlice({
       }
     },
     update: (state) => {
-      state.weekDayIndex = getWeekDay();
+      const date = getDate();
+      if (state.date !== date) {
+        state.date = date;
+        state.weekDayIndex = getWeekDay();
+      }
     },
     pauseTick: (state) => {
       state.statsData[state.statsData.length - 1][state.weekDayIndex].pauseTime++;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(tick, (state) => {
@@ -96,7 +106,7 @@ const statsSlice = createSlice({
     builder.addCase(stop, (state) => {
       state.statsData[state.statsData.length - 1][state.weekDayIndex].stopsCount++;
     });
-    builder.addCase(decrement, (state) => {
+    builder.addCase(timerDecrement, (state) => {
       state.statsData[state.statsData.length - 1][state.weekDayIndex].tomatosCount++;
     });
   }

@@ -45,7 +45,7 @@ const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
       >
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="weekDay"
+          dataKey="weekDayLabel"
           axisLine={false}
           tickLine={false}
           tick={{
