@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useTheme } from "@mui/material";
-import { BarChart as RechartsBarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart as RechartsBarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Text } from 'recharts';
 import { IWeekDayData } from "../features/stats/statsSlice";
+import { Coordinate } from "recharts/types/util/types";
 
 interface IBarChart {
   data: IWeekDayData[];
@@ -16,6 +17,39 @@ const formatTime = (time: number) => {
   return (time >= 3600)
     ? `${hours ? `${hours} ч ` : ""}${minutes ? `${minutes} мин` : ""}`
     : `${minutes ? `${minutes} мин ` : ""}${time - minutes * 60} с`;
+}
+
+interface ICustomTick {
+  className: string;
+  fill: string;
+  height: number;
+  index: number;
+  orientation: string;
+  payload: {
+    coordinate: number;
+    index: number;
+    isShow: boolean;
+    offset: number;
+    tickCoord: number;
+    value: string;
+  };
+  stroke: string;
+  textAnchor: "inherit" | "middle" | "end" | "start" | undefined;
+  verticalAnchor: string;
+  visibleTicksCount: number;
+  width: number;
+  x: number;
+  y: number;
+}
+
+const CustomTick = ({ tickObj, activeBar }: { tickObj: ICustomTick, activeBar: number }) => {
+  console.log(tickObj);
+  const { x, y, payload, textAnchor } = tickObj;
+  const { palette } = useTheme();
+
+  return <Text x={x} y={y} dy={16} fontSize="24px" textAnchor={textAnchor} fill={payload.index === activeBar ? palette.red.medium : palette.gray[99]}>
+    {payload.value}
+  </Text>
 }
 
 const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
@@ -48,10 +82,11 @@ const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
           dataKey="weekDayLabel"
           axisLine={false}
           tickLine={false}
-          tick={{
-            fontSize: "24px",
-            fill: palette.gray[99],
-          }}
+          tick={(tickObj) => <CustomTick tickObj={tickObj} activeBar={activeBar} />}
+          // tick={{
+          //   fontSize: "24px",
+          //   fill: palette.gray[99],
+          // }}
           tickSize={10}
           padding={{
             left: 40,
@@ -59,12 +94,12 @@ const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
           }}
         />
         <YAxis tick={{ width: 80, fontSize: "12px", }} axisLine={false} tickLine={false} orientation="right" tickFormatter={formatTime} minTickGap={25} tickMargin={25} />
-        <Tooltip cursor={{ fill: "transparent" }} wrapperStyle={{ display: "none" }} animationEasing="ease-in-out" />
-        <Bar dataKey="time" onClick={(e) => console.log(e)}>
+        <Tooltip cursor={{ fill: "transparent" }} wrapperStyle={{ display: "none" }} />
+        <Bar dataKey="time" minPointSize={5} onClick={(e) => console.log(e)} animationEasing="ease-in-out">
         {data.map((entry, index) => (
           <Cell
             key={`${index}`}
-            fill={activeBar === index ? palette.red.medium : hoveredBar === index ? palette.red.main : palette.red.light}
+            fill={entry.time === 0 ? palette.gray.C4 : activeBar === index ? palette.red.medium : hoveredBar === index ? palette.red.main : palette.red.light}
             cursor="pointer"
             style={{
               transition: "fill .2s ease-in-out",
