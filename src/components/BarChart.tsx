@@ -2,22 +2,6 @@ import { useState } from "react";
 import { useTheme } from "@mui/material";
 import { BarChart as RechartsBarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Text } from 'recharts';
 import { IWeekDayData } from "../features/stats/statsSlice";
-import { Coordinate } from "recharts/types/util/types";
-
-interface IBarChart {
-  data: IWeekDayData[];
-  activeBar: number;
-  setActiveBar: React.Dispatch<React.SetStateAction<number>>;
-}
-
-const formatTime = (time: number) => {
-  const hours = Math.floor(time / 3600);
-  const minutes = time >= 3600 ? Math.round((time - hours * 3600) / 60) : Math.floor((time - hours * 3600) / 60);
-
-  return (time >= 3600)
-    ? `${hours ? `${hours} ч ` : ""}${minutes ? `${minutes} мин` : ""}`
-    : `${minutes ? `${minutes} мин ` : ""}${time - minutes * 60} с`;
-}
 
 interface ICustomTick {
   className: string;
@@ -42,14 +26,41 @@ interface ICustomTick {
   y: number;
 }
 
-const CustomTick = ({ tickObj, activeBar }: { tickObj: ICustomTick, activeBar: number }) => {
-  console.log(tickObj);
+const CustomTick = ({ tickObj, activeBar, setActiveBar }: { tickObj: ICustomTick, activeBar: number, setActiveBar: React.Dispatch<React.SetStateAction<number>> }) => {
   const { x, y, payload, textAnchor } = tickObj;
   const { palette } = useTheme();
 
-  return <Text x={x} y={y} dy={16} fontSize="24px" textAnchor={textAnchor} fill={payload.index === activeBar ? palette.red.medium : palette.gray[99]}>
-    {payload.value}
-  </Text>
+  return (
+    <Text
+      x={x}
+      y={y}
+      dy={16}
+      fontSize="24px"
+      textAnchor={textAnchor}
+      cursor="pointer"
+      fill={payload.index === activeBar ? palette.red.medium : palette.gray[99]}
+      onClick={() => setActiveBar(payload.index)}>
+      {payload.value}
+    </Text>
+  )
+}
+
+
+interface IBarChart {
+  data: IWeekDayData[];
+  activeBar: number;
+  setActiveBar: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const formatTime = (time: number) => {
+  const hours = Math.floor(time / 3600);
+  const minutes = time >= 3600 ? Math.round((time - hours * 3600) / 60) : Math.floor((time - hours * 3600) / 60);
+
+  return (time === 0)
+    ? ""
+    : (time >= 3600)
+    ? `${hours ? `${hours} ч ` : ""}${minutes ? `${minutes} мин` : ""}`
+    : `${minutes ? `${minutes} мин ` : ""}${time - minutes * 60} с`;
 }
 
 const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
@@ -82,7 +93,7 @@ const BarChart = ({ data, activeBar, setActiveBar }: IBarChart) => {
           dataKey="weekDayLabel"
           axisLine={false}
           tickLine={false}
-          tick={(tickObj) => <CustomTick tickObj={tickObj} activeBar={activeBar} />}
+          tick={(tickObj) => <CustomTick tickObj={tickObj} activeBar={activeBar} setActiveBar={setActiveBar} />}
           // tick={{
           //   fontSize: "24px",
           //   fill: palette.gray[99],

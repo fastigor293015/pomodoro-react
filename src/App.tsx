@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import TimerPage from './scenes/TimerPage';
 import StatsPage from './scenes/StatsPage';
 import ErrorPage from './scenes/ErrorPage';
-import { init, update } from './features/stats/statsSlice';
+import { getDate, init, update } from './features/stats/statsSlice';
 
 const router = createBrowserRouter([
   {
@@ -27,12 +27,13 @@ const router = createBrowserRouter([
 function App() {
   const mode = useAppSelector(state => state.theme.mode);
   const statsData = useAppSelector(state => state.stats.statsData);
+  const date = useAppSelector(state => state.stats.date);
   const dispatch = useAppDispatch();
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   useEffect(() => {
-    if (!statsData || statsData.length === 0) dispatch(init());
     dispatch(update());
+    if (!statsData || statsData.length === 0) dispatch(init());
   },);
 
   return (

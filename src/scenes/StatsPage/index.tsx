@@ -115,7 +115,7 @@ const StatsPage = () => {
             </Box>
 
             <Box sx={styles.content}>
-              <Box sx={sx(styles.statsCard, styles.weekDay)} key={`time-${curDay?.time}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(2)}>
+              <Box sx={sx(styles.statsCard, styles.weekDay)} key={`time-${curDay?.weekDay}-${curDay?.time}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(2)}>
                 <Typography sx={styles.weekDayTitle} variant="h3">
                   {curDay?.weekDay}
                 </Typography>
@@ -172,7 +172,7 @@ const StatsPage = () => {
                 </Box>
                 <GenericIcon type={EIcons.clock} />
               </Box>
-              <Box sx={sx(styles.statsCard, styles.stops)} key={`stops-${curDay?.pauseTime}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(7)}>
+              <Box sx={sx(styles.statsCard, styles.stops)} key={`stops-${curDay?.stopsCount}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(7)}>
                 <Box sx={styles.stopsText}>
                   <Typography sx={styles.stopsTitle} variant="h3">
                     Остановки

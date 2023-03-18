@@ -31,7 +31,7 @@ const weekDays = [
     weekDay: "Воскресенье",
     weekDayLabel: "Вс",
   },
-]
+];
 
 export interface IWeekDayData {
   weekDay: string,
@@ -55,8 +55,10 @@ const getWeekDay = () => {
   return dayIndex === 0 ? 6 : dayIndex - 1;
 }
 
-const getDate = () => {
-  return new Date().toLocaleDateString("ru-RU");
+const testWeeksAgoCount = 0;
+
+export const getDate = (index: number = 0) => {
+  return new Date(new Date().getTime() + (index - testWeeksAgoCount * 7) * 24 * 60 * 60 * 1000).toLocaleDateString("ru-RU");
 }
 
 const initialState: StatsState = {
@@ -70,27 +72,63 @@ const statsSlice = createSlice({
   initialState,
   reducers: {
     init: (state) => {
+      let twoWeeksAgoMonday = -(state.weekDayIndex + 7 * 2);
       for (let i = 0; i < 3; i++) {
         const weekDaysList: IWeekDayData[] = [];
 
         for (let j = 0; j < weekDays.length; j++) {
           weekDaysList.push({
             ...weekDays[j],
-            date: "",
+            date: getDate(twoWeeksAgoMonday),
             time: 0,
             tomatosCount: 0,
             pauseTime: 0,
             stopsCount: 0,
           })
+          twoWeeksAgoMonday++;
         }
         state.statsData.push(weekDaysList);
       }
     },
     update: (state) => {
-      const date = getDate();
-      if (state.date !== date) {
-        state.date = date;
-        state.weekDayIndex = getWeekDay();
+      if (state.date === getDate()) return;
+      state.date = getDate();
+      state.weekDayIndex = getWeekDay();
+
+      if (state.statsData.length === 0) return;
+
+      const mondaysList = state.statsData.map(weekItem => weekItem[0].date ).reverse();
+      let targetMonday = -state.weekDayIndex;
+      let curDateIndexInMondaysList: number = 0;
+      for (let i = 0; i < mondaysList.length; i++) {
+        curDateIndexInMondaysList = mondaysList.findIndex(mondayDate =>
+          mondayDate === getDate(targetMonday)
+        ) + i;
+        if (curDateIndexInMondaysList >= 0) break;
+        targetMonday -= 7;
+      }
+      console.log(curDateIndexInMondaysList);
+      if (curDateIndexInMondaysList !== 0) {
+        let iterationsCount = curDateIndexInMondaysList < 0 ? state.statsData.length : curDateIndexInMondaysList;
+        targetMonday = -(state.weekDayIndex + 7 * (iterationsCount - 1));
+        for (let i = 0; i < iterationsCount; i++) {
+          const weekDaysList: IWeekDayData[] = [];
+
+          for (let j = 0; j < weekDays.length; j++) {
+            weekDaysList.push({
+              ...weekDays[j],
+              date: getDate(targetMonday),
+              time: 0,
+              tomatosCount: 0,
+              pauseTime: 0,
+              stopsCount: 0,
+            })
+            console.log(targetMonday);
+            targetMonday++;
+          }
+          state.statsData.push(weekDaysList);
+          state.statsData.shift();
+        }
       }
     },
     pauseTick: (state) => {
