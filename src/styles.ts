@@ -29,6 +29,22 @@ const styles: StylesType = (theme) => ({
       color: theme.palette.gray.C4,
     }
   },
+  slidingPanel: {
+    background: {
+      position: "fixed",
+      zIndex: "20",
+      inset: 0,
+    },
+    content: {
+      position: "absolute",
+      zIndex: "20",
+      top: "0",
+      bottom: "0",
+      right: "0",
+      bgcolor: theme.palette.background.default,
+      boxShadow: "-7px 4px 8px 0px rgba(34, 60, 80, 0.2)",
+    }
+  },
   dropdownMenu: {
     container: {
       position: "absolute",
@@ -101,7 +117,7 @@ const styles: StylesType = (theme) => ({
       alignItems: "center",
       gap: "15px",
     },
-    themeSwitchBtn: {
+    iconBtn: {
       color: theme.palette.red.medium,
       "& svg": {
         fontSize: "25px",
@@ -118,6 +134,38 @@ const styles: StylesType = (theme) => ({
       "&:hover": {
         color: theme.palette.red.dark,
       },
+      "& svg": {
+        fontSize: "26px",
+      }
+    },
+    settings: {
+      display: "flex",
+      flexDirection: "column",
+      height: "100%",
+      width: "400px",
+    },
+    settingsTop: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      p: "24px",
+    },
+    settingsTitle: {
+      fontWeight: 500,
+    },
+    settingsCloseBtn: {
+      color: theme.palette.text.primary,
+      "& svg": {
+        fontSize: "25px",
+      }
+    },
+    settingsContent: {
+      p: "24px",
+    },
+    settingsRow: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
     },
   },
 

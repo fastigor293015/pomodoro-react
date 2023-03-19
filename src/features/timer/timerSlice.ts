@@ -51,9 +51,12 @@ const timerSlice = createSlice({
           state.breakNumber = state.breakNumber >= 4 ? 1 : state.breakNumber + 1;
         }
       }
-    }
+    },
+    increaseTime: (state) => {
+      state.curTime -= 95;
+    },
   },
 });
 
-export const { stop, tick, nextStep } = timerSlice.actions;
+export const { stop, tick, nextStep, increaseTime } = timerSlice.actions;
 export default timerSlice.reducer;

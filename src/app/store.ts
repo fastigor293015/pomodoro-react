@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import settingsSlice from "../features/settings/settingsSlice";
 import statsSlice from "../features/stats/statsSlice";
 import tasksSlice from "../features/tasks/tasksSlice";
 import themeSlice from "../features/theme/themeSlice";
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   tasks: tasksSlice,
   timer: timerSlice,
   stats: statsSlice,
+  settings: settingsSlice,
 });
 
 const persistConfig = { key: "root", storage, version: 1 };

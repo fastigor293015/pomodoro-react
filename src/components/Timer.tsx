@@ -4,14 +4,17 @@ import useSxStyles from "../hooks/useSxStyles";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { ESteps, nextStep, stop, tick } from "../features/timer/timerSlice";
+import { ESteps, increaseTime, nextStep, stop, tick } from "../features/timer/timerSlice";
 import { timerDecrement } from "../features/tasks/tasksSlice";
+import { pauseTick } from "../features/stats/statsSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
 import IconButton from "./IconButton";
 import PrimaryButton from "./PrimaryButton";
 import OutlinedButton from "./OutlinedButton";
-import { pauseTick } from "../features/stats/statsSlice";
+
+import useSound from "use-sound";
+import alarmSound from "../assets/audio/alarm.mp3";
 
 
 const digitVariants: Variants = {
@@ -48,6 +51,7 @@ const formatTime = (time: number) => {
 
 const Timer = () => {
   const { curTime, tomatoNumber, breakNumber, step } = useAppSelector(state => state.timer);
+  const playSound = useAppSelector(state => state.settings.playSound);
   const tasksList = useAppSelector(state => state.tasks.list);
   const firstTaskName = tasksList[0] ? tasksList[0].name : "Не задана";
   const dispatch = useAppDispatch();
@@ -55,6 +59,7 @@ const Timer = () => {
   const [formattedMinutes, formattedSeconds] = formatTime(curTime);
   const [isStarted, setIsStarted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [play, soundTools] = useSound(alarmSound);
 
   const { palette } = useTheme();
   const styles = useSxStyles().timer;
@@ -73,8 +78,25 @@ const Timer = () => {
     dispatch(stop());
   }
 
+  const playAlarmSound = () => {
+    if (!playSound) return;
+    setTimeout(() => {
+      play();
+      if (confirm("Пора переходить к следующему шагу")) {
+        soundTools.stop();
+      } else {
+        soundTools.stop();
+      }
+    }, 50);
+  }
+
   useInterval(() => {
-    curTime <= 0 ? updateTimer() : dispatch(tick());
+    if (curTime <= 0) {
+      updateTimer();
+      playAlarmSound();
+    } else {
+      dispatch(tick());
+    }
   }, isPlaying ? 1000 : null);
 
   useInterval(() => {
@@ -132,7 +154,7 @@ const Timer = () => {
               </Box>
             ))}
 
-            <IconButton sx={styles.addTimeBtn}>
+            <IconButton sx={styles.addTimeBtn} onClick={() => dispatch(increaseTime())}>
               <Add />
             </IconButton>
           </Box>

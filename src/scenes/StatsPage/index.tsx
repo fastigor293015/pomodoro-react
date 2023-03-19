@@ -155,7 +155,7 @@ const StatsPage = () => {
                     Фокус
                   </Typography>
                   <Typography sx={styles.focusDescr}>
-                    0%
+                    {(curDay?.pauseTime && curDay?.pauseTime) ? Math.round(curDay.time / (curDay.time + curDay.pauseTime) * 100) : 0}%
                   </Typography>
                 </Box>
                 <GenericIcon type={EIcons.target} />
