@@ -47,19 +47,17 @@ interface StatsState {
   statsData: IWeekDayData[][];
   weekDayIndex: number;
   date: string;
-}
+};
 
 const getWeekDay = () => {
   const dayIndex = new Date().getDay();
 
   return dayIndex === 0 ? 6 : dayIndex - 1;
-}
-
-const testWeeksAgoCount = 0;
+};
 
 export const getDate = (index: number = 0) => {
-  return new Date(new Date().getTime() + (index - testWeeksAgoCount * 7) * 24 * 60 * 60 * 1000).toLocaleDateString("ru-RU");
-}
+  return new Date(new Date().getTime() + index * 24 * 60 * 60 * 1000).toLocaleDateString("ru-RU");
+};
 
 const initialState: StatsState = {
   statsData: [],

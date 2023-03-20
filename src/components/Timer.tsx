@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useInterval from "../hooks/useInterval";
 import useSxStyles from "../hooks/useSxStyles";
-import { Box, Typography, useTheme } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Add, CheckCircle, Pause, PlayArrow, Stop } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { ESteps, increaseTime, nextStep, stop, tick } from "../features/timer/timerSlice";
 import { timerDecrement } from "../features/tasks/tasksSlice";
@@ -19,7 +19,7 @@ import alarmSound from "../assets/audio/alarm.mp3";
 
 const digitVariants: Variants = {
   initial: {
-    y: -120,
+    y: "-80%",
     opacity: 0,
   },
   animate: {
@@ -28,7 +28,7 @@ const digitVariants: Variants = {
   },
   exit: {
     position: "absolute",
-    y: 120,
+    y: "80%",
     opacity: 0,
   },
 };
@@ -61,9 +61,15 @@ const Timer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [play, soundTools] = useSound(alarmSound);
 
-  const { palette } = useTheme();
+  const theme = useTheme();
   const styles = useSxStyles().timer;
-  const stepColor = !isStarted ? palette.gray.C4 : step === ESteps.work ? palette.red.medium : palette.green.main;
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const stepColor = !isStarted ? theme.palette.gray.C4 : step === ESteps.work ? theme.palette.red.medium : theme.palette.green.main;
+
+  const desktopPlayBtnLabel = !isStarted ? "Старт" : !isPlaying ? "Продолжить" : "Пауза";
+  const mobilePlayBtnLabel = !isPlaying ? <PlayArrow /> : <Pause />;
+  const desktopStopBtnLabel = (!isStarted || (isPlaying && step === ESteps.work)) ? "Стоп" : (step === ESteps.shortBreak || step === ESteps.longBreak) ? "Пропустить" : "Сделано";
+  const mobileStopBtnLabel = (!isStarted || (isPlaying && step === ESteps.work)) ? <Stop /> : (step === ESteps.shortBreak || step === ESteps.longBreak) ? <Stop /> : <CheckCircle />;
 
   const updateTimer = () => {
     setIsStarted(false);
@@ -165,14 +171,16 @@ const Timer = () => {
         </Typography>
 
         <Box sx={styles.btnsContainer}>
-          <PrimaryButton onClick={() => {
+          <PrimaryButton sx={styles.controlsBtn} onClick={() => {
             setIsStarted(true);
             setIsPlaying(!isPlaying);
           }}>
-            {!isStarted ? "Старт" : !isPlaying ? "Продолжить" : "Пауза"}
+            {!isMobileScreen && desktopPlayBtnLabel}
+            {isMobileScreen && mobilePlayBtnLabel}
           </PrimaryButton>
-          <OutlinedButton onClick={(!isStarted || (isPlaying && step === ESteps.work)) ? resetTimer : updateTimer} disabled={!isStarted}>
-            {(!isStarted || (isPlaying && step === ESteps.work)) ? "Стоп" : (step === ESteps.shortBreak || step === ESteps.longBreak) ? "Пропустить" : "Сделано"}
+          <OutlinedButton sx={styles.controlsBtn} onClick={(!isStarted || (isPlaying && step === ESteps.work)) ? resetTimer : updateTimer} disabled={!isStarted}>
+            {!isMobileScreen && desktopStopBtnLabel}
+            {isMobileScreen && mobileStopBtnLabel}
           </OutlinedButton>
         </Box>
       </Box>

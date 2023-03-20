@@ -90,7 +90,7 @@ const styles: StylesType = (theme) => ({
       justifyContent: "space-between",
       height: "70px",
       p: "0 80px",
-      boxShadow: "0px 10px 63px rgba(0, 0, 0, 0.07)",
+      boxShadow: `0px 10px 63px ${theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.07)" : "rgba(255, 255, 255, 0.07)"}`,
       backdropFilter: `blur(15px)`,
       inset: "0 0 auto 0",
       "&::before": {
@@ -101,6 +101,18 @@ const styles: StylesType = (theme) => ({
         bgcolor: theme.palette.background.default,
         opacity: .65,
         transition: "opacity .2s ease-in-out",
+      },
+      [theme.breakpoints.down("lg")]: {
+        p: "0 40px",
+      },
+      [theme.breakpoints.down("md")]: {
+        p: "0 30px",
+      },
+      [theme.breakpoints.down("sm")]: {
+        p: "0 15px",
+      },
+      [theme.breakpoints.down(500)]: {
+        p: "0 10px",
       },
     },
     logo: {
@@ -116,6 +128,9 @@ const styles: StylesType = (theme) => ({
       display: "flex",
       alignItems: "center",
       gap: "15px",
+      [theme.breakpoints.down("sm")]: {
+        gap: "10px",
+      },
     },
     iconBtn: {
       color: theme.palette.red.medium,
@@ -143,6 +158,9 @@ const styles: StylesType = (theme) => ({
       flexDirection: "column",
       height: "100%",
       width: "400px",
+      [theme.breakpoints.down(400)]: {
+        width: "100vw",
+      },
     },
     settingsTop: {
       display: "flex",
@@ -172,20 +190,24 @@ const styles: StylesType = (theme) => ({
   // TIMER PAGE
   timerPage: {
     container: {
-      display: "flex",
+      display: "grid",
+      gridTemplateColumns: "41.47% 1fr",
+      gridAutoRows: "minmax(0, max-content)",
       gap: "16px",
-    },
-    left: {
-      flexBasis: "calc((100%-16px)*0.42)",
+      rowGap: "25px",
+      [theme.breakpoints.down(1100)]: {
+        gridTemplateColumns: "1fr",
+        rowGap: "16px",
+      },
     },
     title: {
       mb: "3px",
+
+      [theme.breakpoints.down(500)]: {
+        fontSize: "22px",
+      },
     },
-    taskAddForm: {
-      mb: "25px",
-    },
-    tasksList: {
-      mb: "25px",
+    descrList: {
       pl: "20px",
       fontSize: "16px",
       lineHeight: 2,
@@ -196,17 +218,38 @@ const styles: StylesType = (theme) => ({
       },
       "& li::marker": {
         color: theme.palette.red.dark,
-      }
+      },
+      [theme.breakpoints.down(500)]: {
+        fontSize: "14px",
+      },
     },
-    right: {
-      flexBasis: "calc((100%-16px)*0.58)",
+    tasksBlock: {
+      justifySelf: "auto",
+      maxWidth: "370px",
+      textAlign: "left",
+      [theme.breakpoints.down(1100)]: {
+        justifySelf: "center",
+        maxWidth: "unset",
+        width: "470px",
+      },
+      [theme.breakpoints.down(500)]: {
+        width: "100%",
+      },
+    },
+    taskAddForm: {
+      mb: "25px",
+    },
+    timerBlock: {
+      gridRow: "2 span",
+      [theme.breakpoints.down(1100)]: {
+        gridRow: "unset",
+      },
     },
   },
 
   // CREATE TASK FORM
   createTaskForm: {
     inputWrapper: {
-      maxWidth: "370px",
       mb: "25px",
       p: "15px 15px 14px",
       bgcolor: theme.palette.gray.F4,
@@ -216,7 +259,6 @@ const styles: StylesType = (theme) => ({
   // TASKS LIST
   tasksList: {
     list: {
-      maxWidth: "370px",
       mb: "19px",
       "& > li": {
         borderBottom: `1px solid ${theme.palette.gray.E4}`,
@@ -228,7 +270,7 @@ const styles: StylesType = (theme) => ({
     totalTime: {
       color: theme.palette.gray[99],
       fontSize: "16px",
-      lineHeight: "17px",
+      lineHeight: 1.0625,
       fontWeight: 300,
     },
   },
@@ -284,7 +326,7 @@ const styles: StylesType = (theme) => ({
     },
     modalTitle: {
       mb: "25px",
-      lineHeight: "17px",
+      lineHeight: 1.0625,
       fontWeight: "400",
     },
     modalDeleteBtnWrapper: {
@@ -294,7 +336,7 @@ const styles: StylesType = (theme) => ({
       p: "2px 4px",
       color: theme.palette.text.primary,
       fontSize: "16px",
-      lineHeight: "17px",
+      lineHeight: 1.0625,
       fontWeight: 300,
       textDecoration: "underline",
       textTransform: "none",
@@ -309,15 +351,33 @@ const styles: StylesType = (theme) => ({
       alignItems: "center",
       p: "19px 40px",
       fontSize: "16px",
-      lineHeight: "17px",
+      lineHeight: 1.0625,
       color: "#FFF",
       bgcolor: theme.palette.gray.C4,
       transition: "background-color .2s ease-in-out",
+      [theme.breakpoints.down(500)]: {
+        p: "15px 20px",
+      },
+      [theme.breakpoints.down(400)]: {
+        fontSize: "14px",
+        "& > *": {
+          fontSize: "14px",
+        }
+      },
     },
     body: {
       p: "85px 15px 107px",
       textAlign: "center",
       bgcolor: theme.palette.gray.F4,
+      [theme.breakpoints.down("sm")]: {
+        p: "50px 0 72px",
+      },
+      [theme.breakpoints.down(500)]: {
+        p: "30px 0 42px",
+      },
+      [theme.breakpoints.down(400)]: {
+        p: "20px 0 32px",
+      },
     },
     clockFaceWrapper: {
       mb: "15px",
@@ -328,33 +388,78 @@ const styles: StylesType = (theme) => ({
       display: "inline-flex",
       height: "150px",
       fontSize: "150px",
-      lineHeight: "150px",
+      lineHeight: 1,
       fontWeight: 200,
       transition: "color .2s ease-in-out",
+      [theme.breakpoints.down("sm")]: {
+        height: "120px",
+        fontSize: "120px",
+      },
+      [theme.breakpoints.down(500)]: {
+        height: "100px",
+        fontSize: "100px",
+      },
+      [theme.breakpoints.down(400)]: {
+        height: "80px",
+        fontSize: "80px",
+      },
     },
     digitWrapper: {
       position: "relative",
     },
     colon: {
-      transform: "translateY(-20px)",
+      transform: "translateY(-13%)",
     },
     addTimeBtn: {
       position: "absolute",
-      top: "50px",
       left: "calc(100% + 25px)",
+      alignSelf: "center",
+      [theme.breakpoints.down("lg")]: {
+        left: "calc(100% + 15px)",
+      },
+      [theme.breakpoints.down(500)]: {
+        left: "calc(100% + 10px)",
+        width: "30px",
+        height: "30px",
+        "& svg": {
+          fontSize: "20px",
+        },
+      },
+      [theme.breakpoints.down(400)]: {
+        left: "calc(100% + 5px)",
+      },
     },
     taskName: {
       mb: "32px",
       fontSize: "16px",
-      lineHeight: "17px",
+      lineHeight: 1.0625,
       color: "#333",
       "& span:first-of-type": {
         color: theme.palette.gray[99],
+      },
+      [theme.breakpoints.down(500)]: {
+        mb: "25px",
+      },
+      [theme.breakpoints.down(400)]: {
+        mb: "20px",
+        fontSize: "14px",
       },
     },
     btnsContainer: {
       display: "inline-flex",
       gap: "25px",
+    },
+    controlsBtn: {
+      [theme.breakpoints.down("sm")]: {
+        minWidth: "unset",
+        width: "50px",
+        height: "50px",
+        p: "0",
+        borderRadius: "50%",
+        "& svg": {
+          fontSize: "30px",
+        },
+      }
     }
   },
 
