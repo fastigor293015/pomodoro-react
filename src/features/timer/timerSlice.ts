@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { setLongBreakInterval, setLongBreakTime, setShortBreakTime, setTomatoTime } from '../settings/settingsSlice';
 
 export enum ESteps {
   work = "work",
@@ -13,6 +14,10 @@ export enum EStepsTime {
 }
 
 interface TimerState {
+  tomatoTime: number;
+  shortBreakTime: number;
+  longBreakTime: number;
+  longBreakInterval: number;
   curTime: number;
   breakNumber: number;
   tomatoNumber: number;
@@ -20,6 +25,10 @@ interface TimerState {
 }
 
 const initialState: TimerState = {
+  tomatoTime: EStepsTime.work,
+  shortBreakTime: EStepsTime.shortBreak,
+  longBreakTime: EStepsTime.longBreak,
+  longBreakInterval: 4,
   curTime: EStepsTime.work * 60,
   breakNumber: 1,
   tomatoNumber: 1,
@@ -31,30 +40,44 @@ const timerSlice = createSlice({
   initialState,
   reducers: {
     stop: (state) => {
-      state.curTime = state.step === ESteps.work ? EStepsTime.work * 60 : ESteps.shortBreak ? EStepsTime.shortBreak * 60 : EStepsTime.longBreak * 60;
+      state.curTime = state.step === ESteps.work ? state.tomatoTime * 60 : state.step === ESteps.shortBreak ? state.shortBreakTime * 60 : state.longBreakTime * 60;
     },
     tick: (state) => {
       state.curTime = state.curTime - 1;
     },
     nextStep: (state) => {
-      if (state.step === ESteps.work) state.tomatoNumber = state.tomatoNumber >= 4 ? 1 : state.tomatoNumber + 1;
+      if (state.step === ESteps.work) state.tomatoNumber = state.tomatoNumber >= state.longBreakInterval ? 1 : state.tomatoNumber + 1;
       if (state.tomatoNumber === 1 && state.step === ESteps.work) {
         state.step = ESteps.longBreak;
-        state.curTime = EStepsTime.longBreak * 60;
+        state.curTime = state.longBreakTime * 60;
       } else {
         if (state.step === ESteps.work) {
           state.step = ESteps.shortBreak;
-          state.curTime = EStepsTime.shortBreak * 60;
+          state.curTime =  state.shortBreakTime * 60;
         } else {
           state.step = ESteps.work;
-          state.curTime = EStepsTime.work * 60;
-          state.breakNumber = state.breakNumber >= 4 ? 1 : state.breakNumber + 1;
+          state.curTime =  state.tomatoTime * 60;
+          state.breakNumber = state.breakNumber >= state.longBreakInterval ? 1 : state.breakNumber + 1;
         }
       }
     },
     increaseTime: (state) => {
-      state.curTime -= 95;
+      state.curTime += 60;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(setTomatoTime, (state, action: PayloadAction<number>) => {
+      state.tomatoTime = action.payload;
+    });
+    builder.addCase(setShortBreakTime, (state, action: PayloadAction<number>) => {
+      state.shortBreakTime = action.payload;
+    });
+    builder.addCase(setLongBreakTime, (state, action: PayloadAction<number>) => {
+      state.longBreakTime = action.payload;
+    });
+    builder.addCase(setLongBreakInterval, (state, action: PayloadAction<number>) => {
+      state.longBreakInterval = action.payload;
+    });
   },
 });
 

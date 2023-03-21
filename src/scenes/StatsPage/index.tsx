@@ -169,7 +169,6 @@ const StatsPage = () => {
                   </Typography>
                   <Typography sx={styles.pauseTimeDescr}>
                     {formatPauseTime(curDay!.pauseTime)}
-                    {/* 0м */}
                   </Typography>
                 </Box>
                 <GenericIcon type={EIcons.clock} />

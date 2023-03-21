@@ -1,17 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { EStepsTime } from '../timer/timerSlice';
 
 interface SettingsState {
   playSound: boolean;
   tomatoTime: number;
   shortBreakTime: number;
   longBreakTime: number;
+  longBreakInterval: number;
 }
 
 const initialState: SettingsState = {
   playSound: true,
-  tomatoTime: 25,
-  shortBreakTime: 5,
-  longBreakTime: 15,
+  tomatoTime: EStepsTime.work,
+  shortBreakTime: EStepsTime.shortBreak,
+  longBreakTime: EStepsTime.longBreak,
+  longBreakInterval: 4,
 };
 
 const settingsSlice = createSlice({
@@ -30,8 +33,11 @@ const settingsSlice = createSlice({
     setLongBreakTime: (state, action: PayloadAction<number>) => {
       state.longBreakTime = action.payload;
     },
+    setLongBreakInterval: (state, action: PayloadAction<number>) => {
+      state.longBreakInterval = action.payload;
+    },
   }
 });
 
-export const { setPlaySound, setTomatoTime, setShortBreakTime, setLongBreakTime } = settingsSlice.actions;
+export const { setPlaySound, setTomatoTime, setShortBreakTime, setLongBreakTime, setLongBreakInterval } = settingsSlice.actions;
 export default settingsSlice.reducer;

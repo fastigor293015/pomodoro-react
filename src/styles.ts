@@ -166,7 +166,7 @@ const styles: StylesType = (theme) => ({
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      p: "24px",
+      p: "20px",
     },
     settingsTitle: {
       fontWeight: 500,
@@ -178,16 +178,38 @@ const styles: StylesType = (theme) => ({
       }
     },
     settingsContent: {
-      p: "24px",
+      p: "0 20px",
       overflow: "auto",
+    },
+    settingsSection: {
+      pb: "20px",
+    },
+    settingsSectionTitle: {
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
+      mt: "20px",
+      mb: "20px",
+      // color: theme.palette.green.main,
+      color: theme.palette.gray.C4,
+      fontWeight: 500,
+      textTransform: "uppercase",
     },
     settingsRow: {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
+      gap: "10px",
+      mb: "8px",
+      fontSize: "15px",
+      lineHeight: 1.3,
+      fontWeight: 500,
     },
     settingsTimeInput: {
-      p: "15px 15px 14px",
+      flexShrink: 0,
+      width: "27.8%",
+      p: "10px 15px",
+      borderRadius: "15px",
       bgcolor: theme.palette.gray.F4,
     },
   },
@@ -197,7 +219,6 @@ const styles: StylesType = (theme) => ({
     container: {
       display: "grid",
       gridTemplateColumns: "41.47% 1fr",
-      gridAutoRows: "minmax(0, max-content)",
       gap: "16px",
       rowGap: "25px",
       [theme.breakpoints.down(1100)]: {
@@ -229,9 +250,7 @@ const styles: StylesType = (theme) => ({
       },
     },
     tasksBlock: {
-      justifySelf: "auto",
       maxWidth: "370px",
-      textAlign: "left",
       [theme.breakpoints.down(1100)]: {
         justifySelf: "center",
         maxWidth: "unset",
@@ -520,7 +539,7 @@ const styles: StylesType = (theme) => ({
         gap: "15px",
       },
       [theme.breakpoints.down(500)]: {
-        mb: "10px",
+        mb: "20px",
       },
     },
     title: {
