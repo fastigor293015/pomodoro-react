@@ -42,7 +42,6 @@ const contentVariants: Variants = {
 }
 
 const Modal = ({ isOpened, setIsOpened, children }: IModalProps) => {
-  const { palette } = useTheme();
   const styles = useSxStyles().modal;
 
   useEffect(() => {

@@ -50,7 +50,6 @@ const Select = (props: SelectProps) => {
       }}
       IconComponent={ExpandMore}
       sx={{
-        maxWidth: "370px",
         transition: "box-shadow .3s ease-in-out",
         "&.Mui-focused": {
           boxShadow: "0px 10px 63px rgba(0, 0, 0, 0.07)",

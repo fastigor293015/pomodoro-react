@@ -179,11 +179,16 @@ const styles: StylesType = (theme) => ({
     },
     settingsContent: {
       p: "24px",
+      overflow: "auto",
     },
     settingsRow: {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
+    },
+    settingsTimeInput: {
+      p: "15px 15px 14px",
+      bgcolor: theme.palette.gray.F4,
     },
   },
 
@@ -249,10 +254,33 @@ const styles: StylesType = (theme) => ({
 
   // CREATE TASK FORM
   createTaskForm: {
-    inputWrapper: {
+    formContainer: {
+      [theme.breakpoints.down(1100)]: {
+        display: "flex",
+      },
+    },
+    input: {
       mb: "25px",
       p: "15px 15px 14px",
       bgcolor: theme.palette.gray.F4,
+      [theme.breakpoints.down(1100)]: {
+        display: "flex",
+        flexGrow: 1,
+        mb: 0,
+        borderRadius: "20px 0 0 20px",
+      },
+    },
+    submitBtn: {
+      [theme.breakpoints.down(1100)]: {
+        minWidth: "unset",
+        width: "61px",
+        height: "61px",
+        p: 0,
+        borderRadius: "0 20px 20px 0",
+        "& svg": {
+          fontSize: "25px",
+        },
+      },
     },
   },
 
@@ -360,9 +388,9 @@ const styles: StylesType = (theme) => ({
       },
       [theme.breakpoints.down(400)]: {
         fontSize: "14px",
-        "& > *": {
-          fontSize: "14px",
-        }
+        "& *": {
+          fontSize: "14px !important",
+        },
       },
     },
     body: {
@@ -448,16 +476,31 @@ const styles: StylesType = (theme) => ({
     btnsContainer: {
       display: "inline-flex",
       gap: "25px",
+      [theme.breakpoints.down("sm")]: {
+        gap: 0,
+      },
     },
     controlsBtn: {
       [theme.breakpoints.down("sm")]: {
         minWidth: "unset",
-        width: "50px",
-        height: "50px",
+        width: "60px",
+        height: "60px",
         p: "0",
-        borderRadius: "50%",
         "& svg": {
           fontSize: "30px",
+        },
+        "&:first-of-type": {
+          borderRadius: "20px 0 0 20px",
+        },
+        "&:last-of-type": {
+          borderRadius: "0 20px 20px 0",
+        },
+      },
+      [theme.breakpoints.down(400)]: {
+        width: "50px",
+        height: "50px",
+        "& svg": {
+          fontSize: "25px",
         },
       }
     }
@@ -470,6 +513,31 @@ const styles: StylesType = (theme) => ({
       justifyContent: "space-between",
       alignItems: "center",
       mb: "30px",
+      [theme.breakpoints.down("sm")]: {
+        // display: "block",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: "15px",
+      },
+      [theme.breakpoints.down(500)]: {
+        mb: "10px",
+      },
+    },
+    title: {
+      [theme.breakpoints.down(500)]: {
+        fontSize: "22px",
+      },
+    },
+    weeksSelectWrapper: {
+      flexGrow: 1,
+      maxWidth: "370px",
+      [theme.breakpoints.down("md")]: {
+        maxWidth: "270px",
+      },
+      [theme.breakpoints.down("sm")]: {
+        maxWidth: "unset",
+        width: "100%",
+      },
     },
     content: {
       display: "grid",
@@ -478,27 +546,52 @@ const styles: StylesType = (theme) => ({
       gridAutoFlow: "row dense",
       gridAutoRows: "minmax(179px, max-content)",
       gap: "32px",
+      [theme.breakpoints.down(1100)]: {
+        gap: "15px",
+      },
+      [theme.breakpoints.down("md")]: {
+        gridTemplateColumns: "repeat(2, 1fr)",
+        gridTemplateRows: "minmax(180px, max-content)",
+      },
+      [theme.breakpoints.down(500)]: {
+        gridTemplateRows: "minmax(140px, max-content)",
+        gridAutoRows: "minmax(150px, max-content)",
+        gap: "10px",
+      },
     },
     statsCard: {
       p: "25px",
       color: "#333",
+      fontSize: "24px",
       bgcolor: theme.palette.gray.F4,
-      // "&::before": {
-      //   content: `""`,
-      //   position: "absolute",
-      //   inset: 0,
-      //   bgcolor: "#000",
-      //   opacity: .1,
-      // },
+      [theme.breakpoints.down(1100)]: {
+        p: "25px 15px",
+      },
+      [theme.breakpoints.down(499)]: {
+        p: "15px",
+        fontSize: "22px",
+      },
+    },
+    statsCardTitle: {
+      fontSize: "1em",
+      [theme.breakpoints.down(500)]: {
+        gridColumn: "2 span",
+      },
     },
     weekDay: {
       gridColumn: "3 span",
+      [theme.breakpoints.down("md")]: {
+        gridColumn: "1 span",
+      },
+      [theme.breakpoints.down(500)]: {
+        gridColumn: "2 span",
+      },
     },
     weekDayTitle: {
       mb: "14px",
     },
     weekDayDescr: {
-      fontSize: "16px",
+      fontSize: "0.67em",
       lineHeight: 1.75,
       "& span": {
         color: theme.palette.red.medium,
@@ -509,7 +602,18 @@ const styles: StylesType = (theme) => ({
       gridColumn: "9 span",
       gridRow: "2 span",
       maxHeight: "471px",
-      p: 0,
+      p: "0 !important",
+      [theme.breakpoints.down("md")]: {
+        gridColumn: "2 span",
+        gridRow: "1 span",
+        height: "454px",
+      },
+      [theme.breakpoints.down(500)]: {
+        height: "354px",
+      },
+      [theme.breakpoints.down(400)]: {
+        height: "300px",
+      },
     },
     tomatosCount: {
       gridColumn: "3 span",
@@ -517,11 +621,18 @@ const styles: StylesType = (theme) => ({
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      p: 0,
+      p: "0 !important",
       fontSize: "24px",
       lineHeight: 1.375,
       fontWeight: 700,
       textAlign: "center",
+      [theme.breakpoints.down("md")]: {
+        gridColumn: "1 span",
+      },
+      [theme.breakpoints.down(500)]: {
+        gridColumn: "2 span",
+        height: "170px",
+      },
     },
     tomatosCountTop: {
       flexGrow: 1,
@@ -534,6 +645,7 @@ const styles: StylesType = (theme) => ({
       width: "100%",
       p: "9px 0",
       color: "#FFF",
+      fontSize: "1em",
       bgcolor: theme.palette.red.medium,
     },
     focus: {
@@ -545,7 +657,12 @@ const styles: StylesType = (theme) => ({
         top: "50%",
         right: "25px",
         transform: "translateY(-50%)",
+        width: "5.375em",
+        height: "5.375em",
         color: theme.palette.yellow.main,
+      },
+      [theme.breakpoints.down("md")]: {
+        gridColumn: "2 span",
       },
     },
     focusText: {
@@ -556,7 +673,7 @@ const styles: StylesType = (theme) => ({
       mb: "20px",
     },
     focusDescr: {
-      fontSize: "64px",
+      fontSize: "2.67em",
       lineHeight: 1.194,
     },
     pauseTime: {
@@ -568,7 +685,12 @@ const styles: StylesType = (theme) => ({
         top: "50%",
         right: "25px",
         transform: "translateY(-50%)",
+        width: "5.375em",
+        height: "5.375em",
         color: theme.palette.purple.main,
+      },
+      [theme.breakpoints.down("md")]: {
+        gridColumn: "2 span",
       },
     },
     pauseTimeText: {
@@ -579,7 +701,7 @@ const styles: StylesType = (theme) => ({
       mb: "20px",
     },
     pauseTimeDescr: {
-      fontSize: "64px",
+      fontSize: "2.67em",
       lineHeight: 1.194,
     },
     stops: {
@@ -591,7 +713,12 @@ const styles: StylesType = (theme) => ({
         top: "50%",
         right: "25px",
         transform: "translateY(-50%)",
+        width: "5.375em",
+        height: "5.375em",
         color: theme.palette.cyan.main,
+      },
+      [theme.breakpoints.down("md")]: {
+        gridColumn: "2 span",
       },
     },
     stopsText: {
@@ -602,7 +729,7 @@ const styles: StylesType = (theme) => ({
       mb: "10px",
     },
     stopsDescr: {
-      fontSize: "72px",
+      fontSize: "3em",
       lineHeight: 1.1875,
     },
   },

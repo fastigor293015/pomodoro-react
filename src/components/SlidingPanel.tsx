@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import useSxStyles from "../hooks/useSxStyles";
@@ -12,6 +12,15 @@ interface ISlidingPanelProps {
 
 const SlidingPanel = ({ isOpened, setIsOpened, children }: ISlidingPanelProps) => {
   const styles = useSxStyles().slidingPanel;
+
+  useEffect(() => {
+    if (!isOpened) return;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "auto"
+    }
+  }, [isOpened]);
 
   const node = document.getElementById("modal-root")!;
 

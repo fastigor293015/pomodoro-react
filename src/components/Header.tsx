@@ -4,15 +4,16 @@ import { Box, IconButton, Link as MUILink, Typography, Divider, useTheme, useMed
 import { LightMode, DarkMode, Equalizer, Close, Settings } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setMode } from "../features/theme/themeSlice";
-import { setPlaySound } from "../features/settings/settingsSlice";
+import { setLongBreakTime, setPlaySound, setShortBreakTime, setTomatoTime } from "../features/settings/settingsSlice";
 import useSxStyles from "../hooks/useSxStyles";
 import { GenericIcon, EIcons } from "./GenericIcon";
 import SlidingPanel from "./SlidingPanel";
 import Switch from "./Switch";
+import Input from "./Input";
 
 const Header = () => {
   const [isSettingsOpened, setIsSettingsOpened] = useState(false);
-  const settings = useAppSelector(state => state.settings);
+  const { playSound, tomatoTime, shortBreakTime, longBreakTime } = useAppSelector(state => state.settings);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -68,7 +69,19 @@ const Header = () => {
             <Box sx={styles.settingsContent}>
               <Box sx={styles.settingsRow}>
                 Включить уведомления
-                <Switch defaultChecked={settings.playSound} onChange={() => dispatch(setPlaySound())} />
+                <Switch defaultChecked={playSound} onChange={() => dispatch(setPlaySound())} />
+              </Box>
+              <Box sx={styles.settingsRow}>
+                Помидорка
+                <Input sx={styles.settingsTimeInput} type="number" value={tomatoTime} onChange={(e) => dispatch(setTomatoTime(Number(e.target.value)))} />
+              </Box>
+              <Box sx={styles.settingsRow}>
+                Короткий перерыв
+                <Input sx={styles.settingsTimeInput} type="number" value={shortBreakTime} onChange={(e) => dispatch(setShortBreakTime(Number(e.target.value)))} />
+              </Box>
+              <Box sx={styles.settingsRow}>
+                Длинный перерыв
+                <Input sx={styles.settingsTimeInput} type="number" value={longBreakTime} onChange={(e) => dispatch(setLongBreakTime(Number(e.target.value)))} />
               </Box>
             </Box>
           </Box>

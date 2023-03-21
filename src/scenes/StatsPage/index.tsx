@@ -94,29 +94,31 @@ const StatsPage = () => {
           <Header />
           <Container>
             <Box sx={styles.top} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(1)}>
-              <Typography variant="h3">
+              <Typography sx={styles.title} variant="h3">
                 Ваша активность
               </Typography>
-              <Select
-                value={selectValue}
-                onChange={handleChange}
-              >
-                {selectItems.map((item, index) => (
-                  <MenuItem
-                    key={item.value}
-                    autoFocus={index === selectItems.findIndex(item => item.value !== selectValue)}
-                    value={item.value}
-                    disabled={item.value === selectValue}
-                  >
-                    {item.label}
-                  </MenuItem>
-                ))}
-              </Select>
+              <Box sx={styles.weeksSelectWrapper}>
+                <Select
+                  value={selectValue}
+                  onChange={handleChange}
+                >
+                  {selectItems.map((item, index) => (
+                    <MenuItem
+                      key={item.value}
+                      autoFocus={index === selectItems.findIndex(item => item.value !== selectValue)}
+                      value={item.value}
+                      disabled={item.value === selectValue}
+                    >
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
             </Box>
 
             <Box sx={styles.content}>
               <Box sx={sx(styles.statsCard, styles.weekDay)} key={`time-${curDay?.weekDay}-${curDay?.time}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(2)}>
-                <Typography sx={styles.weekDayTitle} variant="h3">
+                <Typography sx={sx(styles.statsCardTitle, styles.weekDayTitle)} variant="h3">
                   {curDay?.weekDay}
                 </Typography>
                 <Typography sx={styles.weekDayDescr}>
@@ -151,7 +153,7 @@ const StatsPage = () => {
 
               <Box sx={sx(styles.statsCard, styles.focus)} key={`focus-${curDay?.pauseTime}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(5)}>
                 <Box sx={styles.focusText}>
-                  <Typography sx={styles.focusTitle} variant="h3">
+                  <Typography sx={sx(styles.statsCardTitle, styles.focusTitle)} variant="h3">
                     Фокус
                   </Typography>
                   <Typography sx={styles.focusDescr}>
@@ -162,7 +164,7 @@ const StatsPage = () => {
               </Box>
               <Box sx={sx(styles.statsCard, styles.pauseTime)} key={`pause-${curDay?.pauseTime}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(6)}>
                 <Box sx={styles.pauseTimeText}>
-                  <Typography sx={styles.pauseTimeTitle} variant="h3">
+                  <Typography sx={sx(styles.statsCardTitle, styles.pauseTimeTitle)} variant="h3">
                     Время на паузе
                   </Typography>
                   <Typography sx={styles.pauseTimeDescr}>
@@ -174,7 +176,7 @@ const StatsPage = () => {
               </Box>
               <Box sx={sx(styles.statsCard, styles.stops)} key={`stops-${curDay?.stopsCount}`} component={motion.div} variants={variants} initial="initial" animate="animate" transition={transition(7)}>
                 <Box sx={styles.stopsText}>
-                  <Typography sx={styles.stopsTitle} variant="h3">
+                  <Typography sx={sx(styles.statsCardTitle, styles.stopsTitle)} variant="h3">
                     Остановки
                   </Typography>
                   <Typography sx={styles.stopsDescr}>
